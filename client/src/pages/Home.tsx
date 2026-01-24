@@ -33,7 +33,7 @@ export default function Home() {
               <span className="text-primary">.</span>
             </h1>
             <p className="text-xl md:text-2xl font-medium text-foreground/80 max-w-xl mb-10 leading-relaxed">
-              We engineer social media presence for brands that refuse to be boring. Specializing in high-impact Instagram Reels and TikToks.
+              We engineer social media presence for brands that <b>refuse to be boring.</b> Stop posting for likes and start building a presence that <b>converts strangers into paying clients.</b>
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/contact" className="bg-foreground text-background px-8 py-4 rounded-full font-bold text-lg uppercase tracking-wide hover:bg-primary hover:text-foreground transition-all flex items-center gap-2 group cursor-pointer inline-flex justify-center">

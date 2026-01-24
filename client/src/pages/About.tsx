@@ -16,14 +16,14 @@ export default function About() {
             We are <br /> <span className="text-primary">Picco Media.</span>
           </h1>
           <p className="text-xl md:text-3xl font-medium leading-relaxed mb-8">
-            We are a collective of digital natives, creators, and strategists obsessed with the scroll. 
+            Small team. Big output.
           </p>
           <div className="text-lg text-neutral-500 max-w-2xl space-y-6 leading-relaxed">
             <p>
-              Founded in 2024, Picco Media started with a simple premise: Most brands are boring on social media because they treat it like a billboard, not a conversation.
+              We are a powerhouse team of three. No fluff, no hand-offs, and no corporate noise. Just direct access to the creative partners who are obsessed with your success.
             </p>
             <p>
-              We fix that. We don't just post; we perform. We understand the algorithm because we live in it. From scripting to shooting, editing to publishing, we handle the entire pipeline of attention.
+              We engineer presence that pops and performs. By combining high-voltage creative with data-backed strategy, we turn passive viewers into paying clients. We handle the entire pipeline—from strategy to execution—so you can focus on <b>closing deals.</b>
             </p>
           </div>
         </motion.div>
@@ -32,12 +32,13 @@ export default function About() {
       {/* Team Section */}
       <section className="py-20 bg-neutral-100">
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-16">The Squad</h2>
+          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-16">The Team</h2>
           
           <div className="grid md:grid-cols-2 gap-12 max-w-4xl">
             {[
-              { name: "Alex Rivera", role: "Creative Director", img: team1 },
-              { name: "Sarah Chen", role: "Head of Strategy", img: team2 }
+              { name: "Anthony Hanna", role: "Creative Director", img: team1 },
+              { name: "Dominic ALlie", role: "Business Director", img: team2 },
+              { name: "Dominic ALlie", role: "Business Director", img: team2 }
             ].map((member, i) => (
               <motion.div
                 key={i}
