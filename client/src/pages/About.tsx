@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import team1 from "@/assets/team-1.png";
-import team2 from "@/assets/team-2.png";
+import team1 from "@/assets/Anthony_Headshot2.jpg";
+import team2 from "@/assets/Dominic_Headshot.jpg";
 
 export default function About() {
   return (

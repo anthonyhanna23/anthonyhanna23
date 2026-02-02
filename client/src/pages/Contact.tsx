@@ -49,18 +49,15 @@ export default function Contact() {
               Let's <br /> <span className="text-primary">Talk.</span>
             </h1>
             <p className="text-xl text-neutral-500 mb-12 max-w-md">
-              Ready to take your social game to the next level? Fill out the form or drop us a line directly.
+              Ready to take your online presence to the next level? Fill out the form or drop us a line directly.
             </p>
             
             <div className="space-y-8">
               <div>
                 <h3 className="font-bold uppercase tracking-wider text-sm text-neutral-400 mb-2">Email Us</h3>
-                <a href="mailto:hello@piccomedia.com" className="text-2xl font-bold hover:text-primary transition-colors">hello@piccomedia.com</a>
+                <a href="mailto:piccomessages@gmail.com" className="text-2xl font-bold hover:text-primary transition-colors">piccomessages@gmail.com</a>
               </div>
-              <div>
-                <h3 className="font-bold uppercase tracking-wider text-sm text-neutral-400 mb-2">Visit Us</h3>
-                <p className="text-2xl font-bold">123 Creator Blvd, <br/>Los Angeles, CA</p>
-              </div>
+              
             </div>
           </motion.div>
 
