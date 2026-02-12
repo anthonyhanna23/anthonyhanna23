@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import { useState, useEffect } from "react";
 import { ArrowRight, Play, TrendingUp, Users } from "lucide-react";
 import heroBg from "@/assets/hero-bg.png";
 import marcRiceThumb1 from "@/assets/MarcRiceThumb1.png";
