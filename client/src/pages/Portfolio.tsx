@@ -3,14 +3,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, X, Play, ArrowLeft } from "lucide-react";
 import fashionThumb from "@/assets/portfolio-fashion.png";
 import techThumb from "@/assets/portfolio-tech.png";
+import marcRiceThumb from "@/assets/IMG_8347.jpg";
 import foodThumb from "@/assets/portfolio-food.png";
 
 const projects = [
   { 
     id: 1, 
-    title: "Neon Streetwear", 
+    title: "Marc Rice", 
     category: "Fashion", 
-    image: fashionThumb, 
+    image: marcRiceThumb, 
     client: "UrbanFit",
     videos: [
       { id: "v1", title: "Street Style 01", type: "Instagram Reel", thumb: fashionThumb },
@@ -22,7 +23,7 @@ const projects = [
     id: 2, 
     title: "Cyber Deck Launch", 
     category: "Tech", 
-    image: techThumb, 
+    image: marcRiceThumb, 
     client: "NexTech",
     videos: [
       { id: "v4", title: "Product Reveal", type: "Product Ad", thumb: techThumb },
@@ -97,13 +98,7 @@ export default function Portfolio() {
                   </p>
                 </div>
                 
-                <div className="flex gap-4">
-                  {['All', 'Fashion', 'Tech', 'Food'].map(cat => (
-                    <button key={cat} className="px-4 py-2 border border-black/10 rounded-full text-sm uppercase font-bold hover:bg-black hover:text-white transition-colors">
-                      {cat}
-                    </button>
-                  ))}
-                </div>
+                
               </div>
             </div>
 
