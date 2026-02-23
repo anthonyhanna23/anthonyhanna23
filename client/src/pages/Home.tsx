@@ -2,17 +2,15 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
 import { ArrowRight, Play, TrendingUp, Users } from "lucide-react";
-import heroBg from "@/assets/hero-bg.png";
-import marcRiceThumb1 from "@/assets/MarcRiceThumb1.png";
-import FloresThumb1 from "@/assets/Flores_Thumb1.jpg";
-import marcRiceThumb3 from "@/assets/IMG_8347.jpg";
-
-import reel1 from '../assets/IMG_8346.jpg' 
-import reel2 from '../assets/IMG_8347.jpg'
-import reel3 from '../assets/IMG_8348.jpg'
-import reel4 from '../assets/Flores_Thumb1.jpg'
-import reel5 from '../assets/Screenshot1.png'
-import reel6 from '../assets/Screenshot2.png'
+import marcRiceThumb1 from "@/assets/webp files/MarcRiceThumb1.webp";
+import FloresThumb1 from "@/assets/webp files/Flores_Thumb1.webp";
+import marcRiceThumb3 from "@/assets/webp files/IMG_8347.webp";
+import reel1 from '../assets/webp files/IMG_8346.webp' 
+import reel2 from '../assets/webp files/IMG_8347.webp'
+import reel3 from '../assets/webp files/IMG_8348.webp'
+import reel4 from '../assets/webp files/Flores_Thumb1.webp'
+import reel5 from '../assets/webp files/Screenshot1.webp'
+import reel6 from '../assets/webp files/Screenshot2.webp'
 
 const workItems = [
   { 
@@ -46,7 +44,7 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center pt-20">
+      <section className="relative min-h-auto md:min-h-screen flex items-start md:items-center pt-48 md:pt-20">
         {/* Animated Background Grid - Vertical/Reels Style */}
         <div className="absolute inset-0 z-0 bg-gray-50 overflow-hidden flex flex-col justify-center gap-5">
 
@@ -85,17 +83,17 @@ export default function Home() {
 
           {/* THE FIX: Added 'pointer-events-none' so mouse passes through to images */}
           <div className="absolute inset-0 bg-white/10 pointer-events-none" /> 
-          <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white from-5% via-white/50 via-30% md:via-60% to-transparent pointer-events-none" />
         </div>
 
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-3.5 md:px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-4xl"
           >
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.9] mb-8 [text-        shadow:0px_4px_10px_rgba(0,0,0,0.5)]">
+            <h1 className="text-[84px] md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.9] mb-8 [text-shadow:0px_4px_10px_rgba(0,0,0,0.5)]">
               Make It <br />
               <motion.span
                 initial={{ opacity: 0, y: 20 }}   // Starts invisible and slightly lower down
@@ -107,11 +105,11 @@ export default function Home() {
                 }}
                 className="inline-block"
               >
-                <span className="text-stroke text-transparent hover:text-primary transition-all duration-500 cursor-default "></span>
+                <span className="text-stroke text-transparent hover:text-primary transition-all duration-500 cursor-default"></span>
                 <span className="text-primary [text-shadow:0px_4px_10px_rgba(0,0,0,0.5)]">POP.</span>
               </motion.span>
             </h1>
-                  <p className="text-xl md:text-2xl font-medium text-black max-w-xl mb-10 leading-relaxed drop-shadow-lg">
+                  <p className="text-xl md:text-2xl font-medium text-black max-w-sm md:max-w-3xl mb-10 leading-relaxed drop-shadow-lg text-left ml-5 md:ml-0">
               We engineer social media presence for brands that <b>refuse to be boring.</b> Stop posting for likes and start building a presence that <b>converts strangers into paying clients.</b>
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -128,7 +126,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="py-32 bg-background relative overflow-hidden">
+      <section className="py-8 md:py-16 bg-background relative overflow-hidden">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-12">
             {[
@@ -166,10 +164,10 @@ export default function Home() {
       </section>
 
       {/* Featured Work Preview */}
-      <section className="py-32 bg-foreground text-background">
-        <div className="container mx-auto px-6">
-          <div className="flex justify-between items-end mb-16">
-            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter">
+      <section className="py-8 md:py-16 bg-foreground text-background">
+        <div className="container mx-auto px-8">
+          <div className="flex justify-between items-end mb-7 md:mb-16">
+            <h2 className="text-6xl md:text-7xl font-black uppercase tracking-tighter text-center md:text-left leading-[0.9]">
               Latest <br /><span className="text-primary">Drops</span>
             </h2>
             <Link href="/portfolio" className="hidden md:flex items-center gap-2 text-primary font-bold uppercase tracking-wide hover:gap-4 transition-all cursor-pointer">

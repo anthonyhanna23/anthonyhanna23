@@ -1,16 +1,23 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Linkedin, Instagram } from "lucide-react";
-import team1 from "@/assets/Anthony_Headshot2.jpg";
-import team2 from "@/assets/Dominic_Headshot.jpg";
+import team1 from "@/assets/webp files/Anthony_Headshot2.webp";
+import team2 from "@/assets/webp files/Dominic_Headshot.webp";
 const team = [
   {
     name: "Anthony Hanna",
     role: "CO-FOUNDER & CREATIVE DIRECTOR",
     expertise: "Visual Storytelling & Short-form Content",
     quote:
-      "---------",
-    bio: "--------",
+      "Creativity is just connecting things.",
+    bio: `Anthony is a digital media strategist and entrepreneur who operates at the dynamic 
+          intersection of art, entertainment, and marketing. Driven by a deep passion for storytelling,
+          he bridges the gap between high-end creative vision and strategic business scaling. 
+          Anthony’s diverse background—from capturing high-stakes digital media for
+          Ohio State Athletics to honing his problem-solving skills through freelance production
+          and real estate sales—has equipped him with a unique, results-oriented mindset. 
+          Dedicated to helping modern brands grow, he combines striking visual content with data-driven marketing
+          to turn compelling narratives into measurable success`,
     img: team1,
   },
   {
@@ -18,8 +25,13 @@ const team = [
     role: "CO_FOUNDER & BUSINESS DIRECTOR",
     expertise: "Business Management & Financial Operations",
     quote:
-      "----------",
-    bio: "---------",
+      "Where there is no vision, the people perish.",
+    bio: `Dominic founded Skydro Solutions, a drone photography business that scaled
+          from concept to serving Fortune 500 companies. He learned the marketing business
+          through real-world experience. Now he applies that hands-on knowledge to help 
+          real estate companies scale efficiently. His expertise spans product positioning,
+          social media optimization, and building brands with rapid growth in the real
+          estate industry.`,
     img: team2,
   },
 ];
@@ -32,9 +44,9 @@ export default function About() {
     setActiveIndex((prev) => (prev - 1 + team.length) % team.length);
 
   return (
-    <div className="pt-20 min-h-screen bg-black text-white selection:bg-primary selection:text-black">
+    <div className="flex flex-col justify-center pt-10 md:pt-20 min-h-screen bg-black text-white selection:bg-primary selection:text-black">
       <section className="py-20 md:py-32 container mx-auto px-6">
-        <div className="text-center mb-20">
+        <div className="text-center mb-10 md:mb-20">
           <p className="text-primary font-bold tracking-[0.3em] uppercase text-xs mb-4">
             [ ABOUT US ]
           </p>
@@ -159,14 +171,14 @@ export default function About() {
       </section>
 
       {/* Stats Section with Dark Theme */}
-      <section className="py-32 bg-neutral-950 border-t border-neutral-900">
+      <section className="py-3 md:py-16 bg-neutral-950 border-t border-neutral-900">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { label: "Views Generated", value: "50M+" },
-              { label: "Clients Happy", value: "32" },
-              { label: "Viral Reels", value: "150+" },
-              { label: "Awards Won", value: "4" },
+              { label: "Views Generated", value: "50K+" },
+              { label: "Clients Happy", value: "5+" },
+              { label: "Viral Reels", value: "5+" },
+              { label: "Coffees Consumed", value: "∞" },
             ].map((stat, i) => (
               <div key={i} className="p-8">
                 <div className="text-4xl md:text-6xl font-display font-black text-primary mb-2">
