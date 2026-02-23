@@ -11,6 +11,7 @@ import Portfolio from "@/pages/Portfolio";
 import Contact from "@/pages/Contact";
 import NotFound from "@/pages/not-found";
 import { useEffect } from "react";
+import { BrowserRouter } from "react-router-dom"; 
 
 function Router() {
   const { pathname } = window.location;
@@ -39,7 +40,7 @@ function App() {
           <div className="bg-grain min-h-screen flex flex-col">
             <Navbar />
             <main className="flex-grow">
-              <Router />
+              <BrowserRouter basename="/anthonyhanna23" />
             </main>
             <Footer />
           </div>
