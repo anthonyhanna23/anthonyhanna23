@@ -15,7 +15,7 @@ import flores from "@/assets/webp files/IMG_8348.webp";
 import flores1 from "@/assets/webp files/Flores1.webp";
 import flores2 from "@/assets/webp files/Flores2.webp";
 import flores3 from "@/assets/webp files/Flores3.webp";
-import flores4 from "@/assets/webp files/IMG_8349.webp";
+import flores4 from "@/assets/webp files/IMG_8349.webp"; 
 const projects = [
   { 
     id: 1, 

@@ -10,7 +10,7 @@ import reel2 from '../assets/webp files/IMG_8347.webp'
 import reel3 from '../assets/webp files/IMG_8348.webp'
 import reel4 from '../assets/webp files/Flores_Thumb1.webp'
 import reel5 from '../assets/webp files/Screenshot1.webp'
-import reel6 from '../assets/webp files/Screenshot2.webp'
+import reel6 from '@/assets/webp files/Screenshot2.webp'
 
 const workItems = [
   { 
