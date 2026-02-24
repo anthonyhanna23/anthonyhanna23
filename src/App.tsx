@@ -22,7 +22,7 @@ function Router() {
   }, [pathname]);
 
   return (
-    <BrowserRouter basename="/anthonyhanna23">
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
