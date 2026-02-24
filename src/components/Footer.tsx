@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 import { Instagram, Twitter, Linkedin, Mail } from "lucide-react";
 
 export function Footer() {
@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-start gap-12">
           <div className="space-y-6 max-w-md">
-            <Link href="/" className="font-display font-black text-4xl tracking-tighter uppercase cursor-pointer inline-block">
+            <Link to="/" className="font-display font-black text-4xl tracking-tighter uppercase cursor-pointer inline-block">
                 Picco Media<span className="text-primary">.</span>
             </Link>
             <p className="text-neutral-400 font-medium leading-relaxed">
@@ -19,10 +19,10 @@ export function Footer() {
             <div className="space-y-3">
               <h4 className="font-display font-bold text-lg uppercase tracking-wider text-primary">Explore</h4>
               <ul className="space-y-2">
-                <li><Link href="/" className="hover:text-primary transition-colors cursor-pointer">Home</Link></li>
-                <li><Link href="/about" className="hover:text-primary transition-colors cursor-pointer">About</Link></li>
-                <li><Link href="/portfolio" className="hover:text-primary transition-colors cursor-pointer">Work</Link></li>
-                <li><Link href="/contact" className="hover:text-primary transition-colors cursor-pointer">Contact</Link></li>
+                <li><Link to="/" className="hover:text-primary transition-colors cursor-pointer">Home</Link></li>
+                <li><Link to="/about" className="hover:text-primary transition-colors cursor-pointer">About</Link></li>
+                <li><Link to="/portfolio" className="hover:text-primary transition-colors cursor-pointer">Work</Link></li>
+                <li><Link to="/contact" className="hover:text-primary transition-colors cursor-pointer">Contact</Link></li>
               </ul>
             </div>
             

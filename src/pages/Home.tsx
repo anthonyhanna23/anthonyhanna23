@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ArrowRight, Play, TrendingUp, Users } from "lucide-react";
 import marcRiceThumb1 from "@/assets/webp files/MarcRiceThumb1.webp";
@@ -113,11 +113,11 @@ export default function Home() {
               We engineer social media presence for brands that <b>refuse to be boring.</b> Stop posting for likes and start building a presence that <b>converts strangers into paying clients.</b>
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="/contact" className="bg-foreground text-background px-8 py-4 rounded-full font-bold text-lg uppercase tracking-wide hover:bg-primary hover:text-foreground transition-all flex items-center gap-2 group cursor-pointer inline-flex justify-center">
+              <Link to="/contact" className="bg-foreground text-background px-8 py-4 rounded-full font-bold text-lg uppercase tracking-wide hover:bg-primary hover:text-foreground transition-all flex items-center gap-2 group cursor-pointer inline-flex justify-center">
                   Start Growth 
                   <ArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link href="/portfolio" className="border border-foreground/20 bg-white/50 backdrop-blur-sm px-8 py-4 rounded-full font-bold text-lg uppercase tracking-wide hover:bg-white hover:border-transparent transition-all cursor-pointer inline-flex justify-center">
+              <Link to="/portfolio" className="border border-foreground/20 bg-white/50 backdrop-blur-sm px-8 py-4 rounded-full font-bold text-lg uppercase tracking-wide hover:bg-white hover:border-transparent transition-all cursor-pointer inline-flex justify-center">
                   View Work
               </Link>
             </div>
@@ -170,7 +170,7 @@ export default function Home() {
             <h2 className="text-[55px] md:text-7xl font-black uppercase tracking-tighter text-center md:text-left leading-[0.9]">
               Latest <br /><span className="text-primary">Drops</span>
             </h2>
-            <Link href="/portfolio" className="hidden md:flex items-center gap-2 text-primary font-bold uppercase tracking-wide hover:gap-4 transition-all cursor-pointer">
+            <Link to="/portfolio" className="hidden md:flex items-center gap-2 text-primary font-bold uppercase tracking-wide hover:gap-4 transition-all cursor-pointer">
                 View All Work <ArrowRight />
             </Link>
           </div>
@@ -202,7 +202,7 @@ export default function Home() {
           </div>
           
           <div className="mt-12 md:hidden">
-            <Link href="/portfolio" className="flex items-center gap-2 text-primary font-bold uppercase tracking-wide cursor-pointer">
+            <Link to="/portfolio" className="flex items-center gap-2 text-primary font-bold uppercase tracking-wide cursor-pointer">
                 View All Work <ArrowRight />
             </Link>
           </div>
