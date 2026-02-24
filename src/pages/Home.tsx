@@ -86,14 +86,14 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-t from-white from-5% via-white/50 via-30% md:via-60% to-transparent pointer-events-none" />
         </div>
 
-        <div className="container mx-auto px-3.5 md:px-6 relative z-10">
+        <div className="container mx-auto px-2 md:px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-4xl"
           >
-            <h1 className="text-[84px] md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.9] mb-8 [text-shadow:0px_4px_10px_rgba(0,0,0,0.5)]">
+            <h1 className="text-[76px] md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.9] mb-8 [text-shadow:0px_4px_10px_rgba(0,0,0,0.5)]">
               Make It <br />
               <motion.span
                 initial={{ opacity: 0, y: 20 }}   // Starts invisible and slightly lower down
@@ -165,9 +165,9 @@ export default function Home() {
 
       {/* Featured Work Preview */}
       <section className="py-8 md:py-16 bg-foreground text-background">
-        <div className="container mx-auto px-8">
+        <div className="container mx-auto px-7">
           <div className="flex justify-between items-end mb-7 md:mb-16">
-            <h2 className="text-6xl md:text-7xl font-black uppercase tracking-tighter text-center md:text-left leading-[0.9]">
+            <h2 className="text-[55px] md:text-7xl font-black uppercase tracking-tighter text-center md:text-left leading-[0.9]">
               Latest <br /><span className="text-primary">Drops</span>
             </h2>
             <Link href="/portfolio" className="hidden md:flex items-center gap-2 text-primary font-bold uppercase tracking-wide hover:gap-4 transition-all cursor-pointer">

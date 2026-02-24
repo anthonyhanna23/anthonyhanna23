@@ -76,7 +76,7 @@ export default function Portfolio() {
             <div className="container mx-auto pt-8 px-6 mb-5 md:mb-15 text-left md:text-left">
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-0 md:gap-8">
                 <div>
-                  <h1 className="text-[45px] md:text-8xl font-black uppercase tracking-tighter leading-[0.6] mb-0 md:mb-1 text-center md:text-left">
+                  <h1 className="text-[40px] md:text-8xl font-black uppercase tracking-tighter leading-[0.6] mb-0 md:mb-1 text-center md:text-left">
                     Selected <br /> <span className="text-stroke text-foreground">Work</span>
                   </h1>
                       <p className="mt-0 text-lg md:text-xl text-neutral-500 max-w-md text-center md:text-left md:mx-0">

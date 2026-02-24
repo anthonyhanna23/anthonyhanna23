@@ -60,14 +60,14 @@ export default function Contact() {
 
   return (
     <div className="pt-32 md:pt-32 min-h-screen bg-background">
-      <div className="container mx-auto px-6">
+      <div className="container mx-auto px-4.5 md:px-6">
         <div className="grid md:grid-cols-2 gap-4 md:gap-20 pb-6 md:pb-0">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-[84px] md:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-center md:text-left">
+            <h1 className="text-[80px] md:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-center md:text-left">
               Let's <br /> <span className="text-primary">Talk.</span>
             </h1>
             <p className="text-lg md:text-xl text-neutral-500 mb-6 md:mb-12 max-w-xs md:max-w-md text-left mx-auto md:mx-0">
