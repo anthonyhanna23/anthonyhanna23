@@ -1,24 +1,26 @@
-import { Link, useLocation } from "wouter";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 export function Navbar() {
-  const [location] = useLocation();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
+  // Changed href to 'to' for React Router compatibility
   const links = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/portfolio", label: "Work" },
-    { href: "/contact", label: "Contact" },
+    { to: "/", label: "Home" },
+    { to: "/about", label: "About" },
+    { to: "/portfolio", label: "Work" },
+    { to: "/contact", label: "Contact" },
   ];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-black/5">
       <div className="container mx-auto px-6 h-20 flex items-center justify-between">
-        <Link href="/" className="font-display font-black text-2xl tracking-tighter uppercase cursor-pointer hover:text-primary transition-colors">
+        {/* Changed href to 'to' */}
+        <Link to="/" className="font-display font-black text-2xl tracking-tighter uppercase cursor-pointer hover:text-primary transition-colors">
             Picco<span className="text-primary">.</span>
         </Link>
 
@@ -26,17 +28,18 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           {links.map((link) => (
             <Link 
-              key={link.href} 
-              href={link.href}
+              key={link.to} 
+              to={link.to} // Changed href to 'to'
               className={cn(
                 "font-medium text-sm uppercase tracking-wide transition-colors hover:text-primary cursor-pointer",
-                location === link.href ? "text-primary" : "text-foreground"
+                location.pathname === link.to ? "text-primary" : "text-foreground" // Updated location check
               )}
             >
                 {link.label}
             </Link>
           ))}
-          <Link href="/contact" className="bg-foreground text-background px-6 py-2.5 rounded-full font-bold text-sm uppercase tracking-wide hover:bg-primary hover:text-foreground transition-all cursor-pointer">
+          {/* Changed href to 'to' */}
+          <Link to="/contact" className="bg-foreground text-background px-6 py-2.5 rounded-full font-bold text-sm uppercase tracking-wide hover:bg-primary hover:text-foreground transition-all cursor-pointer">
               Start Project
           </Link>
         </div>
@@ -59,12 +62,12 @@ export function Navbar() {
         >
           {links.map((link) => (
             <Link 
-              key={link.href} 
-              href={link.href}
+              key={link.to} 
+              to={link.to} // Changed href to 'to'
               onClick={() => setIsOpen(false)}
               className={cn(
                 "font-display font-bold text-3xl uppercase tracking-tight cursor-pointer",
-                location === link.href ? "text-primary" : "text-foreground"
+                location.pathname === link.to ? "text-primary" : "text-foreground" // Updated location check
               )}
             >
                 {link.label}
