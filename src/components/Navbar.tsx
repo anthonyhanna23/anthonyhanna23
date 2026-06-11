@@ -11,8 +11,8 @@ export function Navbar() {
   // Changed href to 'to' for React Router compatibility
   const links = [
     { to: "/", label: "Home" },
-    { to: "/about", label: "About" },
     { to: "/portfolio", label: "Work" },
+    { to: "/about", label: "About" },
     { to: "/contact", label: "Contact" },
   ];
 
@@ -40,7 +40,7 @@ export function Navbar() {
           ))}
           {/* Changed href to 'to' */}
           <Link to="/contact" className="bg-foreground text-background px-6 py-2.5 rounded-full font-bold text-sm uppercase tracking-wide hover:bg-primary hover:text-foreground transition-all cursor-pointer">
-              Start Project
+              Book a Free Call
           </Link>
         </div>
 
@@ -73,6 +73,13 @@ export function Navbar() {
                 {link.label}
             </Link>
           ))}
+          <Link
+            to="/contact"
+            onClick={() => setIsOpen(false)}
+            className="bg-foreground text-background px-6 py-3 rounded-full font-bold text-lg uppercase tracking-wide text-center hover:bg-primary hover:text-foreground transition-all cursor-pointer"
+          >
+              Book a Free Call
+          </Link>
         </motion.div>
       )}
     </nav>

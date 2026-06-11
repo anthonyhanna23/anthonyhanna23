@@ -1,35 +1,16 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { ArrowRight, Play, TrendingUp, Users } from "lucide-react";
-import marcRiceThumb1 from "@/assets/webp files/MarcRiceThumb1.webp";
-import FloresThumb1 from "@/assets/webp files/Flores_Thumb1.webp";
-import marcRiceThumb3 from "@/assets/webp files/IMG_8347.webp";
-import reel1 from '../assets/webp files/IMG_8346.webp' 
+import { ArrowRight, Clapperboard, Video, Target, AtSign, Handshake } from "lucide-react";
+import { ClientStories } from "@/components/home/ClientStories";
+import { useInstagramFeed } from "@/hooks/useInstagramFeed";
+import { workItems as fallbackWorkItems } from "@/data/fallbackWork";
+import reel1 from '../assets/webp files/IMG_8346.webp'
 import reel2 from '../assets/webp files/IMG_8347.webp'
 import reel3 from '../assets/webp files/IMG_8348.webp'
 import reel4 from '../assets/webp files/Flores_Thumb1.webp'
 import reel5 from '../assets/webp files/Screenshot1.webp'
 import reel6 from '@/assets/webp files/Screenshot2.webp'
-
-const workItems = [
-  { 
-    image: marcRiceThumb1, 
-    link: "https://www.instagram.com/reel/DR4u5SyDQ_z/", 
-    title: "MARC RICE" 
-  },
-  { 
-    image: FloresThumb1, 
-    link: "https://www.facebook.com/reel/2276250422826973", 
-    title: "FLORES LANDSCAPING" 
-  },
-  { 
-    image: marcRiceThumb3, 
-    link: "https://www.instagram.com/reel/DSYD2_pEp0k/", 
-    title: "MARC RICE" 
-  }
-]
-
 
 const thumbnails = [
   reel6,
@@ -41,6 +22,16 @@ const thumbnails = [
 ];
 
 export default function Home() {
+  // Live Instagram posts when available; hardcoded items otherwise.
+  const { items: feedItems, isLive } = useInstagramFeed();
+  const workItems = isLive
+    ? feedItems.slice(0, 3).map((item) => ({
+        image: item.thumbnailUrl,
+        link: item.permalink,
+        title: item.clientName.toUpperCase(),
+      }))
+    : fallbackWorkItems;
+
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
@@ -110,11 +101,11 @@ export default function Home() {
               </motion.span>
             </h1>
                   <p className="text-xl md:text-2xl font-medium text-black max-w-sm md:max-w-3xl mb-10 leading-relaxed drop-shadow-lg text-left ml-5 md:ml-0">
-              We engineer social media presence for brands that <b>refuse to be boring.</b> Stop posting for likes and start building a presence that <b>converts strangers into paying clients.</b>
+              We plan, film, and edit <b>scroll-stopping video</b> — and run your strategy and accounts — so Columbus businesses like yours turn followers into <b>paying customers.</b>
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/contact" className="bg-foreground text-background px-8 py-4 rounded-full font-bold text-lg uppercase tracking-wide hover:bg-primary hover:text-foreground transition-all flex items-center gap-2 group cursor-pointer inline-flex justify-center">
-                  Start Growth 
+                  Book a Free Call
                   <ArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link to="/portfolio" className="border border-foreground/20 bg-white/50 backdrop-blur-sm px-8 py-4 rounded-full font-bold text-lg uppercase tracking-wide hover:bg-white hover:border-transparent transition-all cursor-pointer inline-flex justify-center">
@@ -128,22 +119,40 @@ export default function Home() {
       {/* Services Section */}
       <section className="py-8 md:py-16 bg-background relative overflow-hidden">
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="mb-10 md:mb-14">
+            <h2 className="text-[48px] md:text-7xl font-black uppercase tracking-tighter leading-[0.9]">
+              What We <span className="text-foreground">Do</span>
+            </h2>
+            <p className="text-lg md:text-xl text-neutral-500 mt-4 max-w-2xl ml-2">
+              Everything your social media needs, handled end to end. One goal: more customers for your business.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                icon: <Play className="w-12 h-12 mb-6 text-primary" />,
-                title: "Content Production",
-                desc: "We shoot, edit, and deliver high-voltage short-form video content that stops the scroll."
+                icon: <Clapperboard className="w-12 h-12 mb-6 text-primary" />,
+                title: "Video Planning",
+                desc: "We map out content ideas built around what your future customers are actually searching for — so every video has a job to do."
               },
               {
-                icon: <TrendingUp className="w-12 h-12 mb-6 text-secondary" />,
-                title: "Growth Strategy",
-                desc: "Data-driven plans to explode your reach. We don't guess; we engineer virality."
+                icon: <Video className="w-12 h-12 mb-6 text-secondary" />,
+                title: "Filming & Editing",
+                desc: "We show up, shoot, and edit scroll-stopping short-form video that makes people stop, watch, and remember your business."
               },
               {
-                icon: <Users className="w-12 h-12 mb-6 text-pink-500" />,
-                title: "Community Mgmt",
-                desc: "Turning followers into fans. We handle the noise so you can focus on business."
+                icon: <Target className="w-12 h-12 mb-6 text-pink-500" />,
+                title: "Marketing Strategy",
+                desc: "A clear plan with real goals — reach, leads, customers — and the numbers to back it up. We don't guess; we engineer growth."
+              },
+              {
+                icon: <AtSign className="w-12 h-12 mb-6 text-primary" />,
+                title: "Account Management",
+                desc: "We run your Instagram, YouTube, and more — posting, captions, comments — so your accounts stay active while you run your business."
+              },
+              {
+                icon: <Handshake className="w-12 h-12 mb-6 text-secondary" />,
+                title: "1-on-1 Partnership",
+                desc: "We meet with you directly, track what's working, and adjust until the goal is hit: more customers walking through your door."
               }
             ].map((service, i) => (
               <motion.div
@@ -159,9 +168,33 @@ export default function Home() {
                 <p className="text-neutral-500 leading-relaxed">{service.desc}</p>
               </motion.div>
             ))}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="bg-primary p-10 rounded-2xl flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div>
+                <h3 className="text-3xl font-black uppercase tracking-tight mb-4 leading-[0.95]">Ready to grow?</h3>
+                <p className="text-black/70 leading-relaxed font-medium">
+                  Free intro call. We'll tell you exactly what we'd do for your business.
+                </p>
+              </div>
+              <Link
+                to="/contact"
+                className="mt-8 bg-foreground text-background px-6 py-3.5 rounded-full font-bold text-base uppercase tracking-wide hover:bg-white hover:text-foreground transition-all inline-flex items-center justify-center gap-2 group"
+              >
+                Book a Free Call
+                <ArrowRight className="group-hover:translate-x-1 transition-transform" size={18} />
+              </Link>
+            </motion.div>
           </div>
         </div>
       </section>
+
+      {/* Client Stories */}
+      <ClientStories />
 
       {/* Featured Work Preview */}
       <section className="py-8 md:py-16 bg-foreground text-background">

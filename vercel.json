@@ -4,5 +4,11 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/refresh-tokens",
+      "schedule": "0 6 * * *"
+    }
   ]
 }

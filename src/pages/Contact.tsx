@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
+import { CalendlyEmbed } from "@/components/CalendlyEmbed";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -67,19 +68,32 @@ export default function Contact() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-[80px] md:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-center md:text-left">
-              Let's <br /> <span className="text-primary">Talk.</span>
+            <h1 className="text-[80px] md:text-8xl font-black uppercase tracking-tighter leading-none mb-8 text-center md:text-left">
+              Book a <br /> <span className="text-primary">Call<span className="tracking-normal">.</span></span>
             </h1>
-            <p className="text-lg md:text-xl text-neutral-500 mb-6 md:mb-12 max-w-xs md:max-w-md text-left mx-auto md:mx-0">
-              Ready to take your online presence to the next level? Fill out the form or drop us a line directly.
+            <p className="text-lg md:text-xl text-neutral-500 mb-6 md:mb-8 max-w-xs md:max-w-md text-left mx-auto md:mx-0">
+              Grab a <b className="text-foreground">free intro call</b> — we'll talk about your business, your goals, and how we can turn your social media into a customer machine. No pressure, no commitment.
             </p>
-            
+
+            <ul className="mb-6 md:mb-12 space-y-3 max-w-xs md:max-w-md mx-auto md:mx-0">
+              {[
+                "Pick a time that works for you",
+                "15 minutes, straight to the point",
+                "Walk away with a clear game plan",
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3 text-base md:text-lg font-medium">
+                  <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
             <div className="flex flex-col items-center md:items-start mb-2 md:mb-0">
               <div>
                 <h3 className="font-bold uppercase tracking-wider text-sm text-neutral-400 mb-1">Email Us</h3>
                 <a href="mailto:piccomessages@gmail.com" className="text-2xl font-bold hover:text-primary transition-colors block">piccomessages@gmail.com</a>
               </div>
-              
+
             </div>
           </motion.div>
 
@@ -87,6 +101,32 @@ export default function Contact() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <CalendlyEmbed />
+          </motion.div>
+        </div>
+
+        <div className="max-w-2xl mx-auto pt-16 md:pt-24 pb-16 md:pb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-10"
+          >
+            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">
+              Prefer to <span className="text-primary">write<span className="tracking-normal">?</span></span>
+            </h2>
+            <p className="text-xl md:text-2xl text-neutral-500">
+              Not ready to talk yet? Tell us about your business and we'll get back to you within 24 hours.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
             className="bg-white p-8 md:p-12 rounded-3xl border border-black/5 shadow-xl"
           >
             <Form {...form}>
