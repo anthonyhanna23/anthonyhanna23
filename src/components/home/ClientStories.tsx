@@ -60,13 +60,7 @@ export function ClientStories() {
                   ))}
                 </div>
 
-                {client.testimonial.isPlaceholder ? (
-                  <div className="border-l-4 border-primary/30 pl-5 mb-8">
-                    <p className="text-neutral-400 italic">
-                      Testimonial coming soon — the work speaks for itself below.
-                    </p>
-                  </div>
-                ) : (
+                {client.testimonial.isPlaceholder ? null : (
                   <div className="border-l-4 border-primary pl-5 mb-8">
                     <Quote className="w-6 h-6 text-primary mb-2" fill="currentColor" />
                     <p className="text-lg font-medium leading-relaxed mb-2">"{client.testimonial.quote}"</p>
