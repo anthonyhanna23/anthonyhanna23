@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { API_CLIENTS } from "../_lib/clients";
-import { getRedis, refreshLongLivedToken, tokenKey, type StoredToken } from "../_lib/instagram";
+import { API_CLIENTS } from "../_lib/clients.js";
+import { getRedis, refreshLongLivedToken, tokenKey, type StoredToken } from "../_lib/instagram.js";
 
 const MIN_AGE_MS = 24 * 60 * 60 * 1000; // Meta only allows refresh once a token is >24h old
 

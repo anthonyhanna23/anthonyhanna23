@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { API_CLIENTS } from "./_lib/clients";
-import { getRedis, getCachedFeedForClient, getHiddenIds, type FeedItem } from "./_lib/instagram";
+import { API_CLIENTS } from "./_lib/clients.js";
+import { getRedis, getCachedFeedForClient, getHiddenIds, type FeedItem } from "./_lib/instagram.js";
 
 // Public feed: merged, hidden-filtered Instagram media for all connected clients.
 // Never errors toward the visitor — any failure returns an empty list so the

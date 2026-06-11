@@ -1,6 +1,6 @@
 import { Redis } from "@upstash/redis";
 import { createHash, timingSafeEqual } from "node:crypto";
-import { API_CLIENTS, type ApiClient } from "./clients";
+import { API_CLIENTS, type ApiClient } from "./clients.js";
 
 const IG_GRAPH = "https://graph.instagram.com";
 export const FEED_CACHE_TTL_SECONDS = 15 * 60;

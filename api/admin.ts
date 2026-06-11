@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { API_CLIENTS, isValidClientSlug } from "./_lib/clients";
+import { API_CLIENTS, isValidClientSlug } from "./_lib/clients.js";
 import {
   getRedis,
   fetchMediaForClient,
