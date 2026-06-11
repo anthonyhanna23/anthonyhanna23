@@ -12,7 +12,7 @@ import {
   HIDDEN_KEY,
   type FeedItem,
   type StoredToken,
-} from "./_lib/instagram";
+} from "./_lib/instagram.js";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!isAdminAuthorized(req.headers["x-admin-key"])) {
