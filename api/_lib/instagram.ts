@@ -35,6 +35,28 @@ interface IgMedia {
   timestamp: string;
 }
 
+interface IgMediaPage {
+  data: IgMedia[];
+  paging?: { cursors?: { after?: string }; next?: string };
+}
+
+function igMediaToFeedItem(m: IgMedia, client: ApiClient): FeedItem | null {
+  const thumbnailUrl =
+    (m.media_type === "VIDEO" ? m.thumbnail_url : m.media_url) ?? m.thumbnail_url ?? m.media_url ?? "";
+  if (!thumbnailUrl) return null;
+  return {
+    id: m.id,
+    clientSlug: client.slug,
+    clientName: client.name,
+    caption: m.caption ?? "",
+    mediaType: m.media_type,
+    mediaProductType: m.media_product_type ?? "FEED",
+    thumbnailUrl,
+    permalink: m.permalink,
+    timestamp: m.timestamp,
+  };
+}
+
 export function getRedis(): Redis | null {
   const url = process.env.KV_REST_API_URL ?? process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.KV_REST_API_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
@@ -78,28 +100,57 @@ export async function refreshLongLivedToken(accessToken: string): Promise<string
   return data.access_token;
 }
 
+const IG_MEDIA_FIELDS = "id,caption,media_type,media_product_type,media_url,thumbnail_url,permalink,timestamp";
+
 export async function fetchMediaForClient(redis: Redis, client: ApiClient): Promise<FeedItem[]> {
   const stored = await redis.get<StoredToken>(tokenKey(client.slug));
   if (!stored?.accessToken) return [];
 
-  const data = await igFetch<{ data: IgMedia[] }>(
-    `/me/media?fields=id,caption,media_type,media_product_type,media_url,thumbnail_url,permalink,timestamp&limit=24&access_token=${encodeURIComponent(stored.accessToken)}`,
+  const data = await igFetch<IgMediaPage>(
+    `/me/media?fields=${IG_MEDIA_FIELDS}&limit=24&access_token=${encodeURIComponent(stored.accessToken)}`,
   );
 
-  return (data.data ?? [])
-    .map((m) => ({
-      id: m.id,
-      clientSlug: client.slug,
-      clientName: client.name,
-      caption: m.caption ?? "",
-      mediaType: m.media_type,
-      mediaProductType: m.media_product_type ?? "FEED",
-      // media_url is absent for some media (e.g. copyrighted audio); thumbnail_url only exists for VIDEO
-      thumbnailUrl: (m.media_type === "VIDEO" ? m.thumbnail_url : m.media_url) ?? m.thumbnail_url ?? m.media_url ?? "",
-      permalink: m.permalink,
-      timestamp: m.timestamp,
-    }))
-    .filter((item) => item.thumbnailUrl !== "");
+  return (data.data ?? []).map((m) => igMediaToFeedItem(m, client)).filter((item): item is FeedItem => item !== null);
+}
+
+// Paginated fetch used by the admin page. Fetches up to 10 pages (1 000 posts max).
+// Pass sinceIso to stop early once posts older than that date are reached.
+export async function fetchAllMediaForClient(
+  redis: Redis,
+  client: ApiClient,
+  sinceIso?: string,
+): Promise<FeedItem[]> {
+  const stored = await redis.get<StoredToken>(tokenKey(client.slug));
+  if (!stored?.accessToken) return [];
+
+  const all: FeedItem[] = [];
+  let after: string | undefined;
+  const cutoff = sinceIso ? new Date(sinceIso).getTime() : null;
+  const MAX_PAGES = 10;
+
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const cursor = after ? `&after=${encodeURIComponent(after)}` : "";
+    const data = await igFetch<IgMediaPage>(
+      `/me/media?fields=${IG_MEDIA_FIELDS}&limit=100&access_token=${encodeURIComponent(stored.accessToken)}${cursor}`,
+    );
+
+    if (!data.data?.length) break;
+
+    for (const m of data.data) {
+      if (cutoff && new Date(m.timestamp).getTime() < cutoff) {
+        // Posts are in reverse-chronological order; once we're past the cutoff we're done.
+        return all;
+      }
+      const item = igMediaToFeedItem(m, client);
+      if (item) all.push(item);
+    }
+
+    if (!data.paging?.next) break;
+    after = data.paging?.cursors?.after;
+    if (!after) break;
+  }
+
+  return all;
 }
 
 export async function getCachedFeedForClient(redis: Redis, client: ApiClient): Promise<FeedItem[]> {

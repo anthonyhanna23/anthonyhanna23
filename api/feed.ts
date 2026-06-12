@@ -10,7 +10,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  res.setHeader("Cache-Control", "public, s-maxage=900, stale-while-revalidate=86400");
+  // Redis already caches the Instagram feed for 15 min; CDN caching on top of
+  // that causes visible-post changes made in admin to be invisible for up to
+  // another 15 min. Keep it private/no-store so edge caches don't interfere.
+  res.setHeader("Cache-Control", "no-store");
 
   try {
     const redis = getRedis();

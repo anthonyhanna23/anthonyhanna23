@@ -2,7 +2,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { API_CLIENTS, isValidClientSlug } from "./_lib/clients.js";
 import {
   getRedis,
-  fetchMediaForClient,
+  fetchAllMediaForClient,
   fetchProfile,
   exchangeForLongLivedToken,
   getVisibleIds,
@@ -26,6 +26,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (req.query.action === "posts") {
         if (!redis) return res.status(200).json({ posts: [], accounts: [] });
 
+        // Optional days filter: ?days=7 | 30 | 60 | 0 (all time, default)
+        const daysParam = Number(req.query.days ?? 0);
+        const sinceIso =
+          daysParam > 0
+            ? new Date(Date.now() - daysParam * 24 * 60 * 60 * 1000).toISOString()
+            : undefined;
+
         const visible = await getVisibleIds(redis);
         const accounts: { slug: string; name: string; connected: boolean; username?: string; refreshedAt?: string }[] = [];
         const posts: (FeedItem & { hidden: boolean })[] = [];
@@ -41,7 +48,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           });
           if (stored?.accessToken) {
             try {
-              const items = await fetchMediaForClient(redis, client);
+              const items = await fetchAllMediaForClient(redis, client, sinceIso);
               posts.push(...items.map((item) => ({ ...item, hidden: !visible.has(item.id) })));
             } catch (err) {
               console.error(`Admin fetch failed for ${client.slug}:`, err);

@@ -31,10 +31,18 @@ function tokenAgeDays(refreshedAt?: string): number | null {
   return Math.floor((Date.now() - new Date(refreshedAt).getTime()) / (24 * 60 * 60 * 1000));
 }
 
+const DAY_FILTERS = [
+  { label: "7 days", value: 7 },
+  { label: "30 days", value: 30 },
+  { label: "60 days", value: 60 },
+  { label: "All time", value: 0 },
+] as const;
+
 export default function Admin() {
   const [adminKey, setAdminKey] = useState(() => sessionStorage.getItem(ADMIN_KEY_STORAGE) ?? "");
   const [passwordInput, setPasswordInput] = useState("");
   const [loginError, setLoginError] = useState("");
+  const [daysFilter, setDaysFilter] = useState<number>(30);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -50,10 +58,12 @@ export default function Admin() {
     return res;
   };
 
+  const postsQuery = daysFilter > 0 ? `?action=posts&days=${daysFilter}` : "?action=posts";
+
   const { data, isLoading, error } = useQuery<AdminData>({
-    queryKey: ["admin-posts", adminKey],
+    queryKey: ["admin-posts", adminKey, daysFilter],
     enabled: Boolean(adminKey),
-    queryFn: async () => (await adminFetch({ query: "?action=posts" })).json(),
+    queryFn: async () => (await adminFetch({ query: postsQuery })).json(),
   });
 
   const toggleMutation = useMutation({
@@ -67,6 +77,11 @@ export default function Admin() {
         old ? { ...old, posts: old.posts.map((p) => (p.id === id ? { ...p, hidden } : p)) } : old,
       );
       return { previous };
+    },
+    onSuccess: () => {
+      // Invalidate the public feed cache so Home/Portfolio reflect the change
+      // immediately within the same browser session.
+      queryClient.invalidateQueries({ queryKey: ["/api/feed"] });
     },
     onError: (_err, _vars, context) => {
       if (context?.previous) queryClient.setQueryData(["admin-posts", adminKey], context.previous);
@@ -203,12 +218,29 @@ export default function Admin() {
 
         {/* Post grid */}
         <div>
-          <h2 className="text-primary font-bold tracking-[0.3em] uppercase text-xs mb-2">Posts</h2>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-2">
+            <h2 className="text-primary font-bold tracking-[0.3em] uppercase text-xs">Posts</h2>
+            <div className="flex gap-2">
+              {DAY_FILTERS.map((f) => (
+                <button
+                  key={f.value}
+                  onClick={() => setDaysFilter(f.value)}
+                  className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide transition-all ${
+                    daysFilter === f.value
+                      ? "bg-primary text-black"
+                      : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          </div>
           <p className="text-neutral-500 mb-8">
             Click the eye to show or hide a post on the site. Lime border = visible.
           </p>
 
-          {isLoading && <p className="text-neutral-400 animate-pulse">Loading posts...</p>}
+          {isLoading && <p className="text-neutral-400 animate-pulse">Loading posts…</p>}
           {Boolean(error) && <p className="text-destructive">Failed to load posts. Check the console / Vercel logs.</p>}
           {!isLoading && !error && (data?.posts ?? []).length === 0 && (
             <p className="text-neutral-400">No posts yet — connect an Instagram account above.</p>
