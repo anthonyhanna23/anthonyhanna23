@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { API_CLIENTS } from "./_lib/clients.js";
-import { getRedis, getCachedFeedForClient, getHiddenIds, type FeedItem } from "./_lib/instagram.js";
+import { getRedis, getCachedFeedForClient, getVisibleIds, type FeedItem } from "./_lib/instagram.js";
 
 // Public feed: merged, hidden-filtered Instagram media for all connected clients.
 // Never errors toward the visitor — any failure returns an empty list so the
@@ -18,8 +18,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(200).json({ items: [], updatedAt: new Date().toISOString() });
     }
 
-    const [hidden, ...feeds] = await Promise.all([
-      getHiddenIds(redis),
+    const [visible, ...feeds] = await Promise.all([
+      getVisibleIds(redis),
       ...API_CLIENTS.map((client) =>
         getCachedFeedForClient(redis, client).catch((err) => {
           console.error(`Feed fetch failed for ${client.slug}:`, err);
@@ -30,7 +30,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const items = feeds
       .flat()
-      .filter((item) => !hidden.has(item.id))
+      .filter((item) => visible.has(item.id))
       .sort((a, b) => b.timestamp.localeCompare(a.timestamp));
 
     return res.status(200).json({ items, updatedAt: new Date().toISOString() });

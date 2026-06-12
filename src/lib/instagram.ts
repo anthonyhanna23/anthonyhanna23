@@ -5,6 +5,7 @@ export interface FeedItem {
   clientName: string;
   caption: string;
   mediaType: string;
+  mediaProductType: string;
   thumbnailUrl: string;
   permalink: string;
   timestamp: string;

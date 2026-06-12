@@ -68,8 +68,8 @@ export default function Contact() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-[80px] md:text-8xl font-black uppercase tracking-tighter leading-none mb-8 text-center md:text-left">
-              Book a <br /> <span className="text-primary">Call<span className="tracking-normal">.</span></span>
+            <h1 className="text-[14.5vw] md:text-8xl font-black uppercase tracking-tighter leading-none mb-8 text-center md:text-left">
+              <span className="text-[17.5vw] md:text-[1em]">Book</span> <br className="md:hidden" />a <br className="hidden md:inline" /><span className="text-primary">Call<span className="tracking-normal">.</span></span>
             </h1>
             <p className="text-lg md:text-xl text-neutral-500 mb-6 md:mb-8 max-w-xs md:max-w-md text-left mx-auto md:mx-0">
               Grab a <b className="text-foreground">free intro call</b> — we'll talk about your business, your goals, and how we can turn your social media into a customer machine. No pressure, no commitment.
@@ -89,9 +89,9 @@ export default function Contact() {
             </ul>
 
             <div className="flex flex-col items-center md:items-start mb-2 md:mb-0">
-              <div>
+              <div className="text-center md:text-left">
                 <h3 className="font-bold uppercase tracking-wider text-sm text-neutral-400 mb-1">Email Us</h3>
-                <a href="mailto:piccomessages@gmail.com" className="text-2xl font-bold hover:text-primary transition-colors block">piccomessages@gmail.com</a>
+                <a href="mailto:piccomessages@gmail.com" className="text-xl md:text-2xl font-bold hover:text-primary transition-colors block break-all md:break-normal">piccomessages@gmail.com</a>
               </div>
 
             </div>
@@ -114,8 +114,8 @@ export default function Contact() {
             transition={{ duration: 0.6 }}
             className="text-center mb-10"
           >
-            <h2 className="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6">
-              Prefer to <span className="text-primary">write<span className="tracking-normal">?</span></span>
+            <h2 className="text-[9.5vw] md:text-7xl font-black uppercase tracking-tighter leading-none mb-6">
+              <span className="text-[12.5vw] md:text-[1em]">Prefer</span> <br className="md:hidden" />to <span className="text-primary">write<span className="tracking-normal">?</span></span>
             </h2>
             <p className="text-xl md:text-2xl text-neutral-500">
               Not ready to talk yet? Tell us about your business and we'll get back to you within 24 hours.

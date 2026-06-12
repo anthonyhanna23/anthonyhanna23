@@ -30,7 +30,7 @@ export function Footer() {
               <h4 className="font-display font-bold text-lg uppercase tracking-wider text-primary">Socials</h4>
               <ul className="space-y-2">
                 <li><a href="https://www.instagram.com/picco.media" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-2"><Instagram size={16}/> Instagram</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors flex items-center gap-2"><Linkedin size={16}/> LinkedIn</a></li>
+                <li><a href="https://www.linkedin.com/company/picco-media-llc/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors flex items-center gap-2"><Linkedin size={16}/> LinkedIn</a></li>
               </ul>
             </div>
           </div>

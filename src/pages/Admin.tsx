@@ -229,6 +229,11 @@ export default function Admin() {
                   alt={post.caption.slice(0, 60) || "Instagram post"}
                   className={`w-full h-full object-cover ${post.hidden ? "grayscale" : ""}`}
                 />
+                {post.mediaProductType !== "FEED" && post.mediaProductType !== "REELS" && (
+                  <div className="absolute top-3 left-3 bg-amber-400 text-black text-[10px] font-black uppercase tracking-wide px-2 py-0.5 rounded-full">
+                    {post.mediaProductType === "CLIPS" ? "Trial Reel" : post.mediaProductType}
+                  </div>
+                )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">
                   <p className="text-white text-xs font-bold uppercase tracking-wide truncate">{post.clientName}</p>
                   <p className="text-white/60 text-xs truncate">{post.caption || "No caption"}</p>

@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-auto md:min-h-screen flex items-start md:items-center pt-48 md:pt-20">
+      <section className="relative min-h-auto md:min-h-screen flex items-start md:items-center pt-36 md:pt-20">
         {/* Animated Background Grid - Vertical/Reels Style */}
         <div className="absolute inset-0 z-0 bg-gray-50 overflow-hidden flex flex-col justify-center gap-5">
 
@@ -74,17 +74,17 @@ export default function Home() {
 
           {/* THE FIX: Added 'pointer-events-none' so mouse passes through to images */}
           <div className="absolute inset-0 bg-white/10 pointer-events-none" /> 
-          <div className="absolute inset-0 bg-gradient-to-t from-white from-5% via-white/50 via-30% md:via-60% to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white from-15% md:from-5% via-white/70 md:via-white/50 via-40% md:via-60% to-transparent pointer-events-none" />
         </div>
 
-        <div className="container mx-auto px-2 md:px-6 relative z-10">
+        <div className="container mx-auto px-5 md:px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="max-w-4xl"
           >
-            <h1 className="text-[76px] md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.9] mb-8 [text-shadow:0px_4px_10px_rgba(0,0,0,0.5)]">
+            <h1 className="text-[12vw] md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.9] mb-8 [text-shadow:0px_4px_10px_rgba(0,0,0,0.5)] text-center md:text-left -mx-2 md:mx-0">
               Make It <br />
               <motion.span
                 initial={{ opacity: 0, y: 20 }}   // Starts invisible and slightly lower down
@@ -97,11 +97,11 @@ export default function Home() {
                 className="inline-block"
               >
                 <span className="text-stroke text-transparent hover:text-primary transition-all duration-500 cursor-default"></span>
-                <span className="text-primary [text-shadow:0px_4px_10px_rgba(0,0,0,0.5)]">POP.</span>
+                <span className="text-primary text-[22vw] md:text-[1em] [text-shadow:0px_4px_10px_rgba(0,0,0,0.5)]">POP.</span>
               </motion.span>
             </h1>
-                  <p className="text-xl md:text-2xl font-medium text-black max-w-sm md:max-w-3xl mb-10 leading-relaxed drop-shadow-lg text-left ml-5 md:ml-0">
-              We plan, film, and edit <b>scroll-stopping video</b> — and run your strategy and accounts — so Columbus businesses like yours turn followers into <b>paying customers.</b>
+                  <p className="text-xl md:text-2xl font-medium text-black max-w-sm md:max-w-3xl mb-10 leading-relaxed drop-shadow-lg text-left mx-auto md:mx-0 pl-3 md:pl-0">
+              We plan, film, and edit <b>scroll-stopping video</b>, and we run your strategy and accounts too. Columbus businesses like yours hire us to turn followers into <b>paying customers.</b>
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link to="/contact" className="bg-foreground text-background px-8 py-4 rounded-full font-bold text-lg uppercase tracking-wide hover:bg-primary hover:text-foreground transition-all flex items-center gap-2 group cursor-pointer inline-flex justify-center">
@@ -119,12 +119,12 @@ export default function Home() {
       {/* Services Section */}
       <section className="py-8 md:py-16 bg-background relative overflow-hidden">
         <div className="container mx-auto px-6">
-          <div className="mb-10 md:mb-14">
-            <h2 className="text-[48px] md:text-7xl font-black uppercase tracking-tighter leading-[0.9]">
+          <div className="mb-10 md:mb-14 text-center md:text-left">
+            <h2 className="text-[13.5vw] md:text-7xl font-black uppercase tracking-tighter leading-[0.9]">
               What We <span className="text-foreground">Do</span>
             </h2>
-            <p className="text-lg md:text-xl text-neutral-500 mt-4 max-w-2xl ml-2">
-              Everything your social media needs, handled end to end. One goal: more customers for your business.
+            <p className="text-lg md:text-xl text-neutral-500 mt-4 max-w-2xl mx-auto md:mx-0 md:ml-2">
+              Everything your social media needs, handled end to end, all built around bringing you more customers.
             </p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -132,7 +132,7 @@ export default function Home() {
               {
                 icon: <Clapperboard className="w-12 h-12 mb-6 text-primary" />,
                 title: "Video Planning",
-                desc: "We map out content ideas built around what your future customers are actually searching for — so every video has a job to do."
+                desc: "We map out content ideas based on what your future customers are actually searching for, so every video has a purpose."
               },
               {
                 icon: <Video className="w-12 h-12 mb-6 text-secondary" />,
@@ -142,12 +142,12 @@ export default function Home() {
               {
                 icon: <Target className="w-12 h-12 mb-6 text-pink-500" />,
                 title: "Marketing Strategy",
-                desc: "A clear plan with real goals — reach, leads, customers — and the numbers to back it up. We don't guess; we engineer growth."
+                desc: "A clear plan with real goals for reach, leads, and customers, plus the numbers to back it up. No guesswork, just steady growth."
               },
               {
                 icon: <AtSign className="w-12 h-12 mb-6 text-primary" />,
                 title: "Account Management",
-                desc: "We run your Instagram, YouTube, and more — posting, captions, comments — so your accounts stay active while you run your business."
+                desc: "We run your Instagram, YouTube, and more. Posting, captions, comments, all handled, so your accounts stay active while you run your business."
               },
               {
                 icon: <Handshake className="w-12 h-12 mb-6 text-secondary" />,
@@ -200,7 +200,7 @@ export default function Home() {
       <section className="py-8 md:py-16 bg-foreground text-background">
         <div className="container mx-auto px-7">
           <div className="flex justify-between items-end mb-7 md:mb-16">
-            <h2 className="text-[55px] md:text-7xl font-black uppercase tracking-tighter text-center md:text-left leading-[0.9]">
+            <h2 className="w-full md:w-auto text-[14vw] md:text-7xl font-black uppercase tracking-tighter text-center md:text-left leading-[0.9]">
               Latest <br /><span className="text-primary">Drops</span>
             </h2>
             <Link to="/portfolio" className="hidden md:flex items-center gap-2 text-primary font-bold uppercase tracking-wide hover:gap-4 transition-all cursor-pointer">

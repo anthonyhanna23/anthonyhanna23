@@ -5,11 +5,11 @@ import {
   fetchMediaForClient,
   fetchProfile,
   exchangeForLongLivedToken,
-  getHiddenIds,
+  getVisibleIds,
   invalidateFeedCaches,
   isAdminAuthorized,
   tokenKey,
-  HIDDEN_KEY,
+  VISIBLE_KEY,
   type FeedItem,
   type StoredToken,
 } from "./_lib/instagram.js";
@@ -26,7 +26,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (req.query.action === "posts") {
         if (!redis) return res.status(200).json({ posts: [], accounts: [] });
 
-        const hidden = await getHiddenIds(redis);
+        const visible = await getVisibleIds(redis);
         const accounts: { slug: string; name: string; connected: boolean; username?: string; refreshedAt?: string }[] = [];
         const posts: (FeedItem & { hidden: boolean })[] = [];
 
@@ -42,7 +42,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           if (stored?.accessToken) {
             try {
               const items = await fetchMediaForClient(redis, client);
-              posts.push(...items.map((item) => ({ ...item, hidden: hidden.has(item.id) })));
+              posts.push(...items.map((item) => ({ ...item, hidden: !visible.has(item.id) })));
             } catch (err) {
               console.error(`Admin fetch failed for ${client.slug}:`, err);
             }
@@ -72,10 +72,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (typeof id !== "string" || typeof hidden !== "boolean") {
           return res.status(400).json({ error: "id (string) and hidden (boolean) required" });
         }
-        const current = await getHiddenIds(redis);
-        if (hidden) current.add(id);
-        else current.delete(id);
-        await redis.set(HIDDEN_KEY, Array.from(current));
+        const current = await getVisibleIds(redis);
+        if (hidden) current.delete(id);
+        else current.add(id);
+        await redis.set(VISIBLE_KEY, Array.from(current));
         await invalidateFeedCaches(redis);
         return res.status(200).json({ id, hidden });
       }

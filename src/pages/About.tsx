@@ -50,7 +50,7 @@ export default function About() {
           <p className="text-primary font-bold tracking-[0.3em] uppercase text-xs mb-4">
             [ ABOUT US ]
           </p>
-          <h1 className="text-5xl md:text-7xl font-display font-black uppercase tracking-tighter">
+          <h1 className="text-4xl md:text-7xl font-display font-black uppercase tracking-tighter">
             Meet the team
           </h1>
           <p className="text-neutral-500 mt-6 max-w-xl mx-auto font-medium">
@@ -84,7 +84,7 @@ export default function About() {
                   <p className="text-primary font-bold tracking-widest text-xs mb-2 uppercase">
                     [ {team[activeIndex].role} ]
                   </p>
-                  <h2 className="text-5xl md:text-6xl font-display font-extrabold tracking-tight mb-4">
+                  <h2 className="text-4xl md:text-6xl font-display font-extrabold tracking-tight mb-4">
                     {team[activeIndex].name}
                   </h2>
                   <p className="text-neutral-400 font-bold uppercase text-xs tracking-wider">

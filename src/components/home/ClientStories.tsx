@@ -11,9 +11,9 @@ export function ClientStories() {
           <h2 className="text-foreground font-extrabold tracking-[0.3em] uppercase text-base mb-4">
             Client Stories
           </h2>
-          <h3 className="text-[40px] md:text-6xl font-black uppercase tracking-tighter leading-[0.9]">
+          <h3 className="text-[7.5vw] md:text-6xl font-black uppercase tracking-tighter leading-[0.9]">
             Local Businesses,<br />
-            <span className="text-primary">Real</span> <span className="text-primary">Results</span>
+            <span className="text-primary [text-shadow:0_1px_4px_rgba(0,0,0,0.25)] md:[text-shadow:none]">Real<br className="md:hidden" /> Results</span>
           </h3>
         </div>
 
@@ -33,7 +33,7 @@ export function ClientStories() {
                 <img
                   src={client.image}
                   alt={`${client.name} - social media content by Picco Media in Columbus, Ohio`}
-                  className="w-full h-full object-cover"
+                  className={`w-full h-full object-cover ${client.slug === "marc-rice" ? "scale-110 object-[50%_75%]" : ""}`}
                 />
                 <div className="absolute bottom-4 left-4 glass px-4 py-2 rounded-full">
                   <span className="font-bold uppercase tracking-wide text-xs">{client.location}</span>

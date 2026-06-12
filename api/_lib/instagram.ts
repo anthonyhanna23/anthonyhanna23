@@ -18,6 +18,7 @@ export interface FeedItem {
   clientName: string;
   caption: string;
   mediaType: string;
+  mediaProductType: string;
   thumbnailUrl: string;
   permalink: string;
   timestamp: string;
@@ -27,6 +28,7 @@ interface IgMedia {
   id: string;
   caption?: string;
   media_type: string;
+  media_product_type?: string;
   media_url?: string;
   thumbnail_url?: string;
   permalink: string;
@@ -42,11 +44,11 @@ export function getRedis(): Redis | null {
 
 export const tokenKey = (slug: string) => `ig:token:${slug}`;
 export const feedCacheKey = (slug: string) => `ig:feedcache:${slug}`;
-export const HIDDEN_KEY = "ig:hidden";
+export const VISIBLE_KEY = "ig:visible";
 
-export async function getHiddenIds(redis: Redis): Promise<Set<string>> {
-  const hidden = await redis.get<string[]>(HIDDEN_KEY);
-  return new Set(hidden ?? []);
+export async function getVisibleIds(redis: Redis): Promise<Set<string>> {
+  const visible = await redis.get<string[]>(VISIBLE_KEY);
+  return new Set(visible ?? []);
 }
 
 async function igFetch<T>(path: string): Promise<T> {
@@ -81,7 +83,7 @@ export async function fetchMediaForClient(redis: Redis, client: ApiClient): Prom
   if (!stored?.accessToken) return [];
 
   const data = await igFetch<{ data: IgMedia[] }>(
-    `/me/media?fields=id,caption,media_type,media_url,thumbnail_url,permalink,timestamp&limit=24&access_token=${encodeURIComponent(stored.accessToken)}`,
+    `/me/media?fields=id,caption,media_type,media_product_type,media_url,thumbnail_url,permalink,timestamp&limit=24&access_token=${encodeURIComponent(stored.accessToken)}`,
   );
 
   return (data.data ?? [])
@@ -91,6 +93,7 @@ export async function fetchMediaForClient(redis: Redis, client: ApiClient): Prom
       clientName: client.name,
       caption: m.caption ?? "",
       mediaType: m.media_type,
+      mediaProductType: m.media_product_type ?? "FEED",
       // media_url is absent for some media (e.g. copyrighted audio); thumbnail_url only exists for VIDEO
       thumbnailUrl: (m.media_type === "VIDEO" ? m.thumbnail_url : m.media_url) ?? m.thumbnail_url ?? m.media_url ?? "",
       permalink: m.permalink,
