@@ -6,6 +6,7 @@ export interface FeedItem {
   caption: string;
   mediaType: string;
   mediaProductType: string;
+  isSharedToFeed?: boolean;
   thumbnailUrl: string;
   permalink: string;
   timestamp: string;

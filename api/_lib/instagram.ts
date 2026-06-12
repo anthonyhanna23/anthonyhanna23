@@ -19,6 +19,8 @@ export interface FeedItem {
   caption: string;
   mediaType: string;
   mediaProductType: string;
+  // undefined for non-VIDEO media; false = trial reel (not shared to followers)
+  isSharedToFeed?: boolean;
   thumbnailUrl: string;
   permalink: string;
   timestamp: string;
@@ -29,6 +31,7 @@ interface IgMedia {
   caption?: string;
   media_type: string;
   media_product_type?: string;
+  is_shared_to_feed?: boolean;
   media_url?: string;
   thumbnail_url?: string;
   permalink: string;
@@ -51,6 +54,7 @@ function igMediaToFeedItem(m: IgMedia, client: ApiClient): FeedItem | null {
     caption: m.caption ?? "",
     mediaType: m.media_type,
     mediaProductType: m.media_product_type ?? "FEED",
+    isSharedToFeed: m.is_shared_to_feed,
     thumbnailUrl,
     permalink: m.permalink,
     timestamp: m.timestamp,
@@ -100,14 +104,14 @@ export async function refreshLongLivedToken(accessToken: string): Promise<string
   return data.access_token;
 }
 
-const IG_MEDIA_FIELDS = "id,caption,media_type,media_product_type,media_url,thumbnail_url,permalink,timestamp";
+const IG_MEDIA_FIELDS = "id,caption,media_type,media_product_type,is_shared_to_feed,media_url,thumbnail_url,permalink,timestamp";
 
 export async function fetchMediaForClient(redis: Redis, client: ApiClient): Promise<FeedItem[]> {
   const stored = await redis.get<StoredToken>(tokenKey(client.slug));
   if (!stored?.accessToken) return [];
 
   const data = await igFetch<IgMediaPage>(
-    `/me/media?fields=${IG_MEDIA_FIELDS}&limit=24&access_token=${encodeURIComponent(stored.accessToken)}`,
+    `/me/media?fields=${IG_MEDIA_FIELDS}&limit=100&access_token=${encodeURIComponent(stored.accessToken)}`,
   );
 
   return (data.data ?? []).map((m) => igMediaToFeedItem(m, client)).filter((item): item is FeedItem => item !== null);

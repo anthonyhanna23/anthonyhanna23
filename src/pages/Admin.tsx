@@ -66,25 +66,25 @@ export default function Admin() {
     queryFn: async () => (await adminFetch({ query: postsQuery })).json(),
   });
 
+  const adminPostsKey = ["admin-posts", adminKey, daysFilter] as const;
+
   const toggleMutation = useMutation({
     mutationFn: async ({ id, hidden }: { id: string; hidden: boolean }) => {
       await adminFetch({ method: "POST", body: JSON.stringify({ action: "toggle", id, hidden }) });
     },
     onMutate: async ({ id, hidden }) => {
-      await queryClient.cancelQueries({ queryKey: ["admin-posts", adminKey] });
-      const previous = queryClient.getQueryData<AdminData>(["admin-posts", adminKey]);
-      queryClient.setQueryData<AdminData>(["admin-posts", adminKey], (old) =>
+      await queryClient.cancelQueries({ queryKey: adminPostsKey });
+      const previous = queryClient.getQueryData<AdminData>(adminPostsKey);
+      queryClient.setQueryData<AdminData>(adminPostsKey, (old) =>
         old ? { ...old, posts: old.posts.map((p) => (p.id === id ? { ...p, hidden } : p)) } : old,
       );
       return { previous };
     },
     onSuccess: () => {
-      // Invalidate the public feed cache so Home/Portfolio reflect the change
-      // immediately within the same browser session.
       queryClient.invalidateQueries({ queryKey: ["/api/feed"] });
     },
     onError: (_err, _vars, context) => {
-      if (context?.previous) queryClient.setQueryData(["admin-posts", adminKey], context.previous);
+      if (context?.previous) queryClient.setQueryData(adminPostsKey, context.previous);
       toast({ title: "Update failed", description: "Couldn't save the change. Try again.", variant: "destructive" });
     },
   });
@@ -261,9 +261,11 @@ export default function Admin() {
                   alt={post.caption.slice(0, 60) || "Instagram post"}
                   className={`w-full h-full object-cover ${post.hidden ? "grayscale" : ""}`}
                 />
-                {post.mediaProductType !== "FEED" && post.mediaProductType !== "REELS" && (
+                {/* Trial reel: is_shared_to_feed=false is the reliable signal.
+                    CLIPS mediaProductType is a fallback for the active trial window. */}
+                {(post.isSharedToFeed === false || post.mediaProductType === "CLIPS") && (
                   <div className="absolute top-3 left-3 bg-amber-400 text-black text-[10px] font-black uppercase tracking-wide px-2 py-0.5 rounded-full">
-                    {post.mediaProductType === "CLIPS" ? "Trial Reel" : post.mediaProductType}
+                    Trial Reel
                   </div>
                 )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">
