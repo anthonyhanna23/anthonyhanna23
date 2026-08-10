@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Picco Task Clocker</title>
+<style>
+  :root {
+    --bg: #f6f7f9;
+    --card: #ffffff;
+    --ink: #1a1a1f;
+    --muted: #6b7280;
+    --line: #e6e8eb;
+    --accent: #2f6df6;
+    --accent-ink: #ffffff;
+    --green: #1a9c5b;
+    --red: #d94848;
+    --amber: #b7791f;
+    --chip: #eef1f5;
+    --shadow: 0 1px 3px rgba(16,24,40,.06), 0 1px 2px rgba(16,24,40,.04);
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115;
+      --card: #171a21;
+      --ink: #eef0f3;
+      --muted: #9aa3b2;
+      --line: #262b34;
+      --accent: #4b82ff;
+      --amber: #e0a94a;
+      --chip: #222835;
+      --shadow: 0 1px 3px rgba(0,0,0,.4);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 24px 18px 64px; }
+
+  header.top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; margin-bottom: 20px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand .dot {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: var(--accent); color: var(--accent-ink);
+    display: grid; place-items: center; font-weight: 700; font-size: 18px;
+  }
+  .brand h1 { font-size: 18px; margin: 0; font-weight: 650; }
+  .brand p { margin: 0; font-size: 12px; color: var(--muted); }
+
+  .whoami { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+  .whoami b { color: var(--ink); }
+  .linkbtn {
+    background: none; border: none; color: var(--accent);
+    cursor: pointer; font-size: 13px; padding: 0; font: inherit;
+  }
+  .linkbtn:hover { text-decoration: underline; }
+
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 20px; margin-bottom: 18px;
+  }
+
+  label.field { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .03em; }
+  input[type="text"], input[type="password"] {
+    width: 100%; padding: 12px 14px; font-size: 15px;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: var(--bg); color: var(--ink);
+  }
+  input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  .btn {
+    border: none; border-radius: 10px; padding: 12px 18px;
+    font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit;
+  }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); }
+  .btn.primary:hover { filter: brightness(1.05); }
+  .btn.big { width: 100%; padding: 16px; font-size: 17px; }
+  .btn.green { background: var(--green); color: #fff; }
+  .btn.red { background: var(--red); color: #fff; }
+  .btn.ghost { background: var(--chip); color: var(--ink); }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  .picker { text-align: center; padding: 40px 20px; }
+  .picker h2 { margin: 0 0 6px; font-size: 22px; }
+  .picker p { margin: 0 0 24px; color: var(--muted); }
+  .name-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
+  .name-btn {
+    flex: 1 1 160px; max-width: 220px; padding: 22px 16px;
+    border: 2px solid var(--line); border-radius: 14px;
+    background: var(--card); color: var(--ink);
+    font-size: 18px; font-weight: 650; cursor: pointer;
+    transition: border-color .12s, transform .08s;
+  }
+  .name-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .divider { color: var(--muted); font-size: 13px; margin: 14px 0; }
+  .custom-row { display: flex; gap: 8px; max-width: 360px; margin: 0 auto; }
+  .custom-row input { flex: 1; }
+
+  .status { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); margin-bottom: 14px; }
+  .pulse { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); }
+  .pulse.live { background: var(--green); animation: pulse 1.6s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(26,156,91,.5);} 70% { box-shadow: 0 0 0 8px rgba(26,156,91,0);} 100% { box-shadow: 0 0 0 0 rgba(26,156,91,0);} }
+
+  .timer { font-variant-numeric: tabular-nums; font-size: 40px; font-weight: 700; margin: 4px 0 16px; text-align: center; }
+  .timer small { display:block; font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+  .running-task { text-align: center; font-size: 15px; color: var(--muted); margin-bottom: 16px; }
+  .running-task b { color: var(--ink); }
+
+  .log-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 10px; flex-wrap: wrap; }
+  .log-head h3 { margin: 0; font-size: 16px; }
+  .actions { display: flex; gap: 8px; }
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 620px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); font-weight: 650; }
+  td.task { white-space: normal; min-width: 160px; }
+  tr:hover td { background: rgba(127,127,127,.04); }
+  .assignee-chip { display: inline-block; padding: 2px 8px; border-radius: 999px; background: var(--chip); font-size: 12px; font-weight: 600; }
+  .del { color: var(--red); background: none; border: none; cursor: pointer; font-size: 15px; padding: 2px 6px; border-radius: 6px; }
+  .del:hover { background: rgba(217,72,72,.12); }
+  .empty { text-align: center; color: var(--muted); padding: 30px 10px; font-size: 14px; }
+
+  .mode-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; padding: 3px 10px; border-radius: 999px; background: var(--chip); color: var(--muted); }
+  .mode-badge .d { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .mode-badge.local .d { background: var(--amber); }
+
+  .banner { border: 1px solid var(--line); background: rgba(183,121,31,.08); color: var(--ink); border-radius: 10px; padding: 10px 12px; font-size: 13px; margin-bottom: 14px; }
+  .banner b { color: var(--amber); }
+
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 10px; font-size: 14px; opacity: 0; pointer-events: none; transition: all .2s; z-index: 50; max-width: 90%; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .hint { font-size: 12px; color: var(--muted); margin-top: 10px; }
+  .spin { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: rot .7s linear infinite; vertical-align: -2px; }
+  @keyframes rot { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="dot">P</div>
+      <div>
+        <h1>Picco Task Clocker</h1>
+        <p>Clock in, clock out — the rest fills itself in.</p>
+      </div>
+    </div>
+    <div class="whoami" id="whoami" style="display:none">
+      <span>You are <b id="whoName"></b></span>
+      <button class="linkbtn" id="switchUser">switch</button>
+      <button class="linkbtn" id="logoutBtn" style="display:none">log out</button>
+    </div>
+  </header>
+
+  <!-- LOGIN -->
+  <section class="card picker" id="loginCard" style="display:none">
+    <h2>Enter password</h2>
+    <p>This tracker is password protected. Ask Anthony for the shared password.</p>
+    <div class="custom-row">
+      <input type="password" id="pwInput" placeholder="Password" autocomplete="current-password" />
+      <button class="btn primary" id="pwSubmit">Log in</button>
+    </div>
+    <p class="hint" id="pwError" style="color:var(--red); display:none;"></p>
+  </section>
+
+  <!-- NAME PICKER -->
+  <section class="card picker" id="pickerCard" style="display:none">
+    <h2>Who's clocking in?</h2>
+    <p>Pick your name. We'll remember it on this device.</p>
+    <div class="name-row">
+      <button class="name-btn" data-name="Anthony">Anthony</button>
+      <button class="name-btn" data-name="Dominic">Dominic</button>
+    </div>
+    <div class="divider">or enter another name</div>
+    <div class="custom-row">
+      <input type="text" id="customName" placeholder="Your name" />
+      <button class="btn primary" id="saveCustom">Save</button>
+    </div>
+  </section>
+
+  <!-- CLOCK -->
+  <section class="card" id="clockCard" style="display:none">
+    <div class="status">
+      <span class="pulse" id="pulse"></span>
+      <span id="statusText">Not clocked in</span>
+    </div>
+
+    <div id="idleView">
+      <label class="field" for="taskInput">Task</label>
+      <input type="text" id="taskInput" placeholder="What are you working on?" />
+      <div style="height:14px"></div>
+      <button class="btn green big" id="clockInBtn">▶ Clock In</button>
+      <p class="hint">Date, start, end and total time are recorded automatically.</p>
+    </div>
+
+    <div id="runningView" style="display:none">
+      <div class="running-task">Working on <b id="runTask"></b></div>
+      <div class="timer"><span id="timerDisplay">00:00:00</span><small id="startedAt">started</small></div>
+      <button class="btn red big" id="clockOutBtn">■ Clock Out</button>
+    </div>
+  </section>
+
+  <!-- LOG -->
+  <section class="card" id="logCard" style="display:none">
+    <div class="log-head">
+      <h3>Task Log</h3>
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+        <span class="mode-badge" id="modeBadge"><span class="d"></span><span id="modeText">Notion</span></span>
+        <div class="actions">
+          <button class="btn ghost" id="refreshBtn" title="Refresh from Notion">↻</button>
+          <button class="btn ghost" id="copyBtn">Copy</button>
+          <button class="btn ghost" id="csvBtn">CSV</button>
+        </div>
+      </div>
+    </div>
+    <div id="logBanner"></div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Assignee</th><th>Task</th><th>Date</th>
+            <th>Time Started</th><th>Time Ended</th><th>Time Taken</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="logBody"></tbody>
+      </table>
+    </div>
+    <p class="hint" id="logHint"></p>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var LS_USER = "picco.user";
+  var LS_ENTRIES = "picco.entries"; // local-mode only
+  var LS_ACTIVE = "picco.active";
+  var LS_PW = "picco.pw";
+
+  var el = function (id) { return document.getElementById(id); };
+
+  var state = {
+    user: null,
+    remote: false,      // true when a backend (Notion) is reachable
+    authRequired: false, // server has APP_PASSWORD set
+    authed: false,       // passed the login gate (or none needed)
+    loadError: null,
+    entries: [],
+    active: null,
+    tick: null,
+    busy: false
+  };
+
+  /* ---------- storage ---------- */
+  function lsGet(k, d) { try { var v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } }
+  function lsSet(k, v) { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch (e) {} }
+
+  function loadLocal() {
+    state.user = lsGet(LS_USER, null);
+    try { state.active = JSON.parse(lsGet(LS_ACTIVE, "null")); } catch (e) { state.active = null; }
+  }
+  function loadLocalEntries() {
+    try { state.entries = JSON.parse(lsGet(LS_ENTRIES, "[]")); } catch (e) { state.entries = []; }
+  }
+  function saveLocalEntries() { lsSet(LS_ENTRIES, JSON.stringify(state.entries)); }
+  function saveActive() { lsSet(LS_ACTIVE, state.active ? JSON.stringify(state.active) : null); }
+  function saveUser() { lsSet(LS_USER, state.user); }
+
+  /* ---------- formatting ---------- */
+  function fmtDate(d) { return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }); }
+  function fmtTime(d) { return d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }); }
+  function pad(n) { return n < 10 ? "0" + n : "" + n; }
+  function fmtDuration(ms) {
+    var s = Math.floor(ms / 1000);
+    var h = Math.floor(s / 3600); s -= h * 3600;
+    var m = Math.floor(s / 60); s -= m * 60;
+    return pad(h) + ":" + pad(m) + ":" + pad(s);
+  }
+  function humanDuration(ms) {
+    var totalMin = Math.round(ms / 60000);
+    var h = Math.floor(totalMin / 60), m = totalMin % 60;
+    return h > 0 ? h + "h " + m + "m" : m + "m";
+  }
+
+  /* ---------- toast ---------- */
+  var toastTimer = null;
+  function toast(msg) {
+    var t = el("toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove("show"); }, 2400);
+  }
+
+  /* ---------- api ---------- */
+  function getPw() { return lsGet(LS_PW, ""); }
+  function setPw(v) { lsSet(LS_PW, v || null); }
+
+  async function apiFetch(path, opts) {
+    opts = opts || {};
+    opts.headers = Object.assign({}, opts.headers);
+    var pw = getPw();
+    if (pw) opts.headers["x-app-password"] = pw;
+    var res = await fetch(path, opts);
+    if (res.status === 401) {
+      // Stored password is missing or no longer valid — bounce to the login screen.
+      setPw(null);
+      state.authed = false;
+      showLogin("Your session expired. Please log in again.");
+    }
+    return res;
+  }
+
+  async function safeErr(res) {
+    try { var j = await res.json(); return j.error || ("HTTP " + res.status); }
+    catch (e) { return "HTTP " + res.status; }
+  }
+
+  /* ---------- login gate ---------- */
+  function showLogin(msg) {
+    stopTick();
+    el("loginCard").style.display = "";
+    el("pickerCard").style.display = "none";
+    el("clockCard").style.display = "none";
+    el("logCard").style.display = "none";
+    el("whoami").style.display = "none";
+    var err = el("pwError");
+    if (msg) { err.textContent = msg; err.style.display = ""; }
+    else { err.style.display = "none"; }
+    var input = el("pwInput");
+    if (input) { input.value = ""; input.focus(); }
+  }
+
+  async function doLogin() {
+    var typed = el("pwInput").value;
+    if (!typed) { el("pwInput").focus(); return; }
+    var btn = el("pwSubmit");
+    btn.disabled = true; btn.textContent = "Checking…";
+    try {
+      var res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "x-app-password": typed }
+      });
+      if (res.ok) {
+        setPw(typed);
+        state.authed = true;
+        el("loginCard").style.display = "none";
+        el("pwError").style.display = "none";
+        await refreshEntries();
+        render();
+      } else {
+        var err = el("pwError");
+        err.textContent = "Wrong password. Try again.";
+        err.style.display = "";
+        el("pwInput").value = "";
+        el("pwInput").focus();
+      }
+    } catch (e) {
+      var er = el("pwError");
+      er.textContent = "Couldn't reach the server: " + (e.message || e);
+      er.style.display = "";
+    } finally {
+      btn.disabled = false; btn.textContent = "Log in";
+    }
+  }
+
+  function logout() {
+    setPw(null);
+    state.authed = false;
+    showLogin();
+  }
+
+  /* ---------- rendering ---------- */
+  function render() {
+    // Held at the login screen until authenticated.
+    if (state.remote && state.authRequired && !state.authed) {
+      showLogin();
+      return;
+    }
+    el("loginCard").style.display = "none";
+    el("logoutBtn").style.display = (state.remote && state.authRequired) ? "" : "none";
+
+    if (!state.user) {
+      el("pickerCard").style.display = "";
+      el("clockCard").style.display = "none";
+      el("logCard").style.display = "none";
+      el("whoami").style.display = state.authRequired ? "flex" : "none";
+      el("whoName").parentElement.style.display = "none";
+      el("switchUser").style.display = "none";
+      return;
+    }
+    el("whoName").parentElement.style.display = "";
+    el("switchUser").style.display = "";
+    el("pickerCard").style.display = "none";
+    el("clockCard").style.display = "";
+    el("logCard").style.display = "";
+    el("whoami").style.display = "flex";
+    el("whoName").textContent = state.user;
+
+    var badge = el("modeBadge");
+    if (state.remote) { badge.classList.remove("local"); el("modeText").textContent = "Notion synced"; }
+    else { badge.classList.add("local"); el("modeText").textContent = "Local only"; }
+
+    renderClock();
+    renderLog();
+  }
+
+  function renderClock() {
+    if (state.active) {
+      el("idleView").style.display = "none";
+      el("runningView").style.display = "";
+      el("statusText").textContent = "Clocked in";
+      el("pulse").classList.add("live");
+      el("runTask").textContent = state.active.task;
+      el("startedAt").textContent = "started " + fmtTime(new Date(state.active.startISO));
+      startTick();
+    } else {
+      el("idleView").style.display = "";
+      el("runningView").style.display = "none";
+      el("statusText").textContent = "Not clocked in";
+      el("pulse").classList.remove("live");
+      stopTick();
+    }
+  }
+
+  function startTick() { stopTick(); updateTimer(); state.tick = setInterval(updateTimer, 1000); }
+  function stopTick() { if (state.tick) { clearInterval(state.tick); state.tick = null; } }
+  function updateTimer() {
+    if (!state.active) return;
+    el("timerDisplay").textContent = fmtDuration(Date.now() - new Date(state.active.startISO).getTime());
+  }
+
+  function renderLog() {
+    var banner = el("logBanner");
+    banner.innerHTML = "";
+    if (state.remote && state.loadError) {
+      banner.innerHTML = '<div class="banner"><b>Notion connection issue:</b> ' +
+        escapeHtml(state.loadError) + ' &nbsp;Check the env vars, or visit <code>/api/schema</code>.</div>';
+    } else if (!state.remote) {
+      banner.innerHTML = '<div class="banner"><b>Local only.</b> No backend detected, so entries are saved on this device. ' +
+        'Use <b>Copy</b> to paste rows into Notion. Deploy the app to sync automatically.</div>';
+    }
+
+    var body = el("logBody");
+    body.innerHTML = "";
+    if (!state.entries.length) {
+      var tr = document.createElement("tr");
+      tr.innerHTML = '<td colspan="7" class="empty">No tasks logged yet. Clock in above to start.</td>';
+      body.appendChild(tr);
+      el("logHint").textContent = "";
+      return;
+    }
+    // Local entries are oldest-first; remote come newest-first already.
+    var rows = state.remote ? state.entries.slice() : state.entries.slice().reverse();
+    rows.forEach(function (entry) {
+      var tr = document.createElement("tr");
+      var tdA = document.createElement("td");
+      if (entry.assignee) {
+        var chip = document.createElement("span");
+        chip.className = "assignee-chip"; chip.textContent = entry.assignee;
+        tdA.appendChild(chip);
+      }
+      var tdT = document.createElement("td"); tdT.className = "task"; tdT.textContent = entry.task || "";
+      var tdD = document.createElement("td"); tdD.textContent = entry.date || "";
+      var tdS = document.createElement("td"); tdS.textContent = entry.start || "";
+      var tdE = document.createElement("td"); tdE.textContent = entry.end || "";
+      var tdDur = document.createElement("td"); tdDur.textContent = entry.taken || "";
+      var tdX = document.createElement("td");
+      var del = document.createElement("button");
+      del.className = "del"; del.title = "Delete"; del.innerHTML = "&times;";
+      del.addEventListener("click", function () { deleteEntry(entry.id); });
+      tdX.appendChild(del);
+      [tdA, tdT, tdD, tdS, tdE, tdDur, tdX].forEach(function (c) { tr.appendChild(c); });
+      body.appendChild(tr);
+    });
+
+    var totalMs = state.entries.reduce(function (s, e) { return s + (e.ms || 0); }, 0);
+    var hint = state.entries.length + " task" + (state.entries.length === 1 ? "" : "s") + " logged";
+    if (totalMs > 0) hint += " · total tracked " + humanDuration(totalMs);
+    if (state.remote) hint += " · live from Notion";
+    el("logHint").textContent = hint;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  /* ---------- data loading ---------- */
+  async function refreshEntries() {
+    if (!state.remote) { loadLocalEntries(); renderLog(); return; }
+    try {
+      var res = await apiFetch("/api/entries");
+      if (res.ok) {
+        var data = await res.json();
+        state.entries = data.entries || [];
+        state.loadError = null;
+      } else {
+        state.loadError = await safeErr(res);
+      }
+    } catch (e) {
+      state.loadError = String(e.message || e);
+    }
+    renderLog();
+  }
+
+  // Decide remote vs local, and whether a login is required, at startup.
+  async function bootstrap() {
+    try {
+      var res = await fetch("/api/auth");
+      state.remote = true; // any HTTP response means a backend exists
+      state.authRequired = !!(await res.json()).required;
+    } catch (e) {
+      // fetch threw → no backend (e.g. opened as a local file). No login possible.
+      state.remote = false;
+      state.authRequired = false;
+      state.authed = true;
+      loadLocalEntries();
+      return;
+    }
+
+    if (!state.authRequired) {
+      state.authed = true;
+      await refreshEntries();
+      return;
+    }
+
+    // Password required — try a silently-stored one from a previous login.
+    var pw = getPw();
+    if (pw) {
+      try {
+        var vr = await fetch("/api/auth", { method: "POST", headers: { "x-app-password": pw } });
+        state.authed = vr.ok;
+        if (!vr.ok) setPw(null);
+      } catch (e) { state.authed = false; }
+    }
+    if (state.authed) await refreshEntries();
+    // If still not authed, render() shows the login screen.
+  }
+
+  /* ---------- actions ---------- */
+  function setUser(name) {
+    name = (name || "").trim();
+    if (!name) return;
+    state.user = name; saveUser(); render();
+    toast("Hi " + name + " 👋");
+  }
+
+  function clockIn() {
+    var task = el("taskInput").value.trim();
+    if (!task) { toast("Enter a task first"); el("taskInput").focus(); return; }
+    state.active = { task: task, startISO: new Date().toISOString() };
+    saveActive();
+    el("taskInput").value = "";
+    renderClock();
+    toast("Clocked in");
+  }
+
+  async function clockOut() {
+    if (!state.active || state.busy) return;
+    var start = new Date(state.active.startISO);
+    var end = new Date();
+    var ms = end.getTime() - start.getTime();
+    var entry = {
+      id: Date.now() + "-" + Math.random().toString(36).slice(2, 7),
+      assignee: state.user,
+      task: state.active.task,
+      date: fmtDate(start),
+      start: fmtTime(start),
+      end: fmtTime(end),
+      taken: humanDuration(ms),
+      ms: ms,
+      startISO: start.toISOString(),
+      endISO: end.toISOString()
+    };
+
+    if (state.remote) {
+      state.busy = true;
+      var btn = el("clockOutBtn");
+      btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Saving to Notion…';
+      try {
+        var res = await apiFetch("/api/log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(entry)
+        });
+        if (!res.ok) throw new Error(await safeErr(res));
+        state.active = null; saveActive();
+        await refreshEntries();
+        toast("Saved to Notion: " + entry.taken + " on \"" + entry.task + "\"");
+      } catch (e) {
+        toast("Couldn't save to Notion: " + (e.message || e));
+      } finally {
+        state.busy = false;
+        btn.disabled = false; btn.innerHTML = "■ Clock Out";
+        renderClock();
+      }
+    } else {
+      state.entries.push(entry);
+      saveLocalEntries();
+      state.active = null; saveActive();
+      renderClock(); renderLog();
+      toast("Logged " + entry.taken + " on \"" + entry.task + "\"");
+    }
+  }
+
+  async function deleteEntry(id) {
+    if (state.remote) {
+      if (!confirm("Remove this entry from Notion?")) return;
+      try {
+        var res = await apiFetch("/api/log?id=" + encodeURIComponent(id), { method: "DELETE" });
+        if (!res.ok) throw new Error(await safeErr(res));
+        await refreshEntries();
+        toast("Removed from Notion");
+      } catch (e) { toast("Delete failed: " + (e.message || e)); }
+    } else {
+      state.entries = state.entries.filter(function (e) { return e.id !== id; });
+      saveLocalEntries(); renderLog();
+      toast("Entry deleted");
+    }
+  }
+
+  /* ---------- export ---------- */
+  function copyForNotion() {
+    if (!state.entries.length) { toast("Nothing to copy"); return; }
+    var header = ["Assignee", "Task", "Date", "Time Started", "Time Ended", "Time taken"].join("\t");
+    var lines = state.entries.map(function (e) {
+      return [e.assignee, e.task, e.date, e.start, e.end, e.taken].join("\t");
+    });
+    copyText(header + "\n" + lines.join("\n"), state.entries.length + " rows copied — paste into Notion");
+  }
+  function exportCSV() {
+    if (!state.entries.length) { toast("Nothing to export"); return; }
+    var header = ["Assignee", "Task", "Date", "Time Started", "Time Ended", "Time taken"];
+    var rows = state.entries.map(function (e) { return [e.assignee, e.task, e.date, e.start, e.end, e.taken]; });
+    var csv = [header].concat(rows).map(function (r) {
+      return r.map(function (c) {
+        c = String(c == null ? "" : c);
+        if (/[",\n]/.test(c)) c = '"' + c.replace(/"/g, '""') + '"';
+        return c;
+      }).join(",");
+    }).join("\n");
+    var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = "picco-task-log.csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast("CSV downloaded");
+  }
+  function copyText(text, okMsg) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { toast(okMsg); }, fallback);
+    } else { fallback(); }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      try { document.execCommand("copy"); toast(okMsg); } catch (e) { toast("Copy failed"); }
+      document.body.removeChild(ta);
+    }
+  }
+
+  /* ---------- init ---------- */
+  async function init() {
+    loadLocal();
+
+    var nameBtns = document.querySelectorAll(".name-btn");
+    Array.prototype.forEach.call(nameBtns, function (b) {
+      b.addEventListener("click", function () { setUser(b.getAttribute("data-name")); });
+    });
+    el("saveCustom").addEventListener("click", function () { setUser(el("customName").value); });
+    el("customName").addEventListener("keydown", function (e) { if (e.key === "Enter") setUser(el("customName").value); });
+    el("switchUser").addEventListener("click", function () {
+      if (state.active && !confirm("You're still clocked in. Switching won't stop the timer. Continue?")) return;
+      state.user = null; saveUser(); render();
+    });
+
+    el("clockInBtn").addEventListener("click", clockIn);
+    el("taskInput").addEventListener("keydown", function (e) { if (e.key === "Enter") clockIn(); });
+    el("clockOutBtn").addEventListener("click", clockOut);
+    el("refreshBtn").addEventListener("click", function () { refreshEntries(); toast("Refreshed"); });
+    el("copyBtn").addEventListener("click", copyForNotion);
+    el("csvBtn").addEventListener("click", exportCSV);
+
+    el("pwSubmit").addEventListener("click", doLogin);
+    el("pwInput").addEventListener("keydown", function (e) { if (e.key === "Enter") doLogin(); });
+    el("logoutBtn").addEventListener("click", logout);
+
+    await bootstrap();
+    render();
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+</body>
+</html>

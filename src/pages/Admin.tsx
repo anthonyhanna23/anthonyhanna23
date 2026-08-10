@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff, RefreshCw, CheckCircle2, AlertTriangle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import type { FeedItem } from "@/lib/instagram";
 
@@ -149,9 +150,9 @@ export default function Admin() {
   return (
     <div className="pt-32 min-h-screen bg-background pb-24">
       <div className="container mx-auto px-6">
-        <div className="flex items-end justify-between mb-12">
+        <div className="flex items-end justify-between mb-8">
           <h1 className="text-5xl md:text-7xl font-black uppercase tracking-tighter">
-            Content <span className="text-primary">Control</span>
+            Picco <span className="text-primary">Admin</span>
           </h1>
           <button
             onClick={() => {
@@ -163,6 +164,24 @@ export default function Admin() {
             Log out
           </button>
         </div>
+
+        <Tabs defaultValue="content" className="w-full">
+          <TabsList className="mb-10 h-auto rounded-full bg-neutral-100 p-1">
+            <TabsTrigger
+              value="content"
+              className="rounded-full px-5 py-2 text-sm font-bold uppercase tracking-wide data-[state=active]:bg-foreground data-[state=active]:text-primary data-[state=active]:shadow"
+            >
+              Content Control
+            </TabsTrigger>
+            <TabsTrigger
+              value="tracker"
+              className="rounded-full px-5 py-2 text-sm font-bold uppercase tracking-wide data-[state=active]:bg-foreground data-[state=active]:text-primary data-[state=active]:shadow"
+            >
+              Time Tracker
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="content">
 
         {/* Connected accounts */}
         <div className="mb-16">
@@ -285,6 +304,20 @@ export default function Admin() {
             ))}
           </div>
         </div>
+          </TabsContent>
+
+          <TabsContent value="tracker">
+            <p className="text-neutral-500 mb-6">
+              Shared clock-in / clock-out — each finished task writes straight to Notion. You and Dominic see the same live log.
+            </p>
+            <iframe
+              src="/time-tracker.html"
+              title="Picco Task Clocker"
+              className="w-full rounded-2xl border border-black/5 bg-white shadow-sm"
+              style={{ height: "calc(100vh - 18rem)", minHeight: 640 }}
+            />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
